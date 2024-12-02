@@ -10,6 +10,7 @@ create {ANY}
 feature {}
    collection: COLLECTION[T]
    i: INTEGER
+   previous_item: T
 
 feature {ANY}
    make (c: COLLECTION[T])
@@ -19,17 +20,21 @@ feature {ANY}
       end
 
    count (item: T) : INTEGER
+      require
+         input_is_sorted: previous_item = Void or item >= previous_item
       local
          j: INTEGER
       do
+         previous_item := item
+
          from
          until
-            i > collection.upper or else item <= collection.item (i)
+            i = collection.upper or item <= collection.item (i)
          loop
             i := i + 1
          end
 
-         if i > collection.upper or else item < collection.item (i) then
+         if item /= collection.item (i) then
             Result := 0
          else
             from
@@ -43,5 +48,8 @@ feature {ANY}
             Result := j
          end
       end
+
+invariant
+   collection.valid_index (i)
 
 end
