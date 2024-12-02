@@ -1,4 +1,4 @@
-Solutions of https://adventofcode.com/2023/ coded in Eiffel.
+Solutions of https://adventofcode.com/2024/ coded in Eiffel.
 Unless stated otherwise in a special readme file, the code is written
 for [Liberty Eiffel][liberty] and not tested for compatibility
 with other Eiffel compilers.
