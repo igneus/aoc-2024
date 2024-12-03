@@ -15,6 +15,7 @@ feature {ANY}
          is_match: BOOLEAN
       do
          total := 0
+         re := builder.convert_python_pattern ("mul\((\d{1,3}),(\d{1,3})\)")
 
          from
             io.read_line
@@ -22,7 +23,6 @@ feature {ANY}
             io.end_of_input
          loop
             line := io.last_string
-            re := builder.convert_python_pattern ("mul\((\d{1,3}),(\d{1,3})\)")
 
             from
                is_match := re.match (line)
