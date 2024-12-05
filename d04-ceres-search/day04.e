@@ -28,7 +28,9 @@ feature {ANY}
          until
             reader.end_of_input
          loop
-            total := total + occurrences (search, reader) + occurrences (reverse_search, reader)
+            total := total +
+               occurrences (search, reader) +
+               occurrences (reverse_search, reader)
 
             io.put_string (io.last_string)
             io.put_new_line
@@ -49,8 +51,9 @@ feature {ANY}
             until
                x > reader.upper_x
             loop
-               total := total + check_occurrence (search, reader, x, i, 1, 0)
-               total := total + check_occurrence (reverse_search, reader, x, i, 1, 0)
+               total := total +
+                  check_occurrence (search, reader, x, i, 1, 0) +
+                  check_occurrence (reverse_search, reader, x, i, 1, 0)
 
                x := x + 1
             end
@@ -65,6 +68,9 @@ feature {ANY}
 feature {}
 
    occurrences (search: STRING; reader: BUFFERED_LINE_READER): INTEGER
+         -- Count occurrences (horizontal, downward, downward
+         -- diagonal) of string `search' in `reader'
+         -- beginning on the first line of `reader'
       local
          x, y : INTEGER
       do
@@ -76,16 +82,21 @@ feature {}
          until
             x > reader.upper_x
          loop
-            Result := Result + check_occurrence (search, reader, x, y, 1, 0)
-            Result := Result + check_occurrence (search, reader, x, y, 0, 1)
-            Result := Result + check_occurrence (search, reader, x, y, 1, 1)
-            Result := Result + check_occurrence (search, reader, x, y, -1, 1)
+            Result := Result +
+               check_occurrence (search, reader, x, y, 1, 0) + -- horizontal
+               check_occurrence (search, reader, x, y, 0, 1) + -- vertical
+               check_occurrence (search, reader, x, y, 1, 1) + -- diagonal SE
+               check_occurrence (search, reader, x, y, -1, 1)  -- diagonal SW
 
             x := x + 1
          end
       end
 
    check_occurrence (search: STRING; reader: BUFFERED_LINE_READER; x, y, x_increment, y_increment: INTEGER): INTEGER
+         -- Check that string `search' occurs in `reader'
+         -- at position `x', `y' in the direction specified
+         -- by `x_increment' and `y_increment'.
+         -- Returns  if it does, 0 otherwise.
       local
          i: INTEGER
       do
